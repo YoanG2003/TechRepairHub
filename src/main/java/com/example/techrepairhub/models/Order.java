@@ -1,45 +1,36 @@
 package com.example.techrepairhub.models;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String orderNumber;
+    private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime date;
-
-    @Column(nullable = false)
-    private String status;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id", nullable = false)
-    private Device device;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_technicians",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "technician_id")
-    )
-    private List<Technician> technicians = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "device_id")
+    private Device device;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderService> orderServices = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "technician_id")
+    private Technician technician;
 
-    // Getters and Setters
+    @ManyToOne
+    @JoinColumn(name = "repair_service_id")
+    private RepairService repairService; // Added repairService property
 }
-

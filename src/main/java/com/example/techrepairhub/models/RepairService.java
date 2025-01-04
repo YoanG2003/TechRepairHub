@@ -1,27 +1,25 @@
 package com.example.techrepairhub.models;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "repair_services")
 public class RepairService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private Double price;
-
-    @Column(nullable = false)
-    private Integer duration;
-
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderService> orderServices = new ArrayList<>();
-
-    // Getters and Setters
+    @OneToMany(mappedBy = "repairService")
+    private List<Order> orders; // Added orders property
 }
